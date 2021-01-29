@@ -1,0 +1,26 @@
+#ifndef FUNCTIONS_H
+
+#define FUNCTIONS_H
+
+#include <Arduino.h>
+#include <math.h>
+#include <stdio.h>
+#include <TimerOne.h>
+
+typedef struct Potentiometer{
+    String Name;
+    int Position;
+    int prevPosition;
+    int algPin;
+    int ledPin;
+    int send;
+} Potentiometer;
+
+//Use to to check if value for mic/Speaker volume change enough to be consider a input from user.
+//We don't want electrical noise to change volume
+void sendConditionCheck(Potentiometer* P1,Potentiometer* P2);
+
+int PotenFillStruc(Potentiometer* P1,Potentiometer* P2);
+
+
+#endif
