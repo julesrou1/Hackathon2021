@@ -28,5 +28,7 @@ void sendConditionCheck(Potentiometer* P1,Potentiometer* P2);
 
 int PotenFillStruc(Potentiometer* P1,Potentiometer* P2);
 
+void sendPotToPc(Potentiometer* P1,Potentiometer* P2);
+
 
 #endif

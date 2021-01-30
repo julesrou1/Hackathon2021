@@ -29,12 +29,17 @@ void tim1(){
   P2.Position = map(analogRead(P2.algPin), 0, 1023, 0,100);
 
   sendConditionCheck(&P1,&P2);
+
+  sendPotToPc(&P1,&P2);
+
   //appeller les sendto ici
   P1.prevPosition = P1.Position;
   P2.prevPosition = P2.Position;
   }
 
-void tim4(){}
+// void tim4(){
+//   sendPotToPc(&P1,&P2);
+// }
 void showLetters(int printStart, int startLetter)                 // FONCTION POUR SCROLL TEXTE 
 {
   lcd.setCursor(printStart, 1);
@@ -49,18 +54,16 @@ void msgBouge(void){
   i=(i+1)%2;            // modulo 2 donc 2 etats possibles  ( pour test uniquement ) 
   if(i==0){
    // buttonState = digitalRead(buttonPin);
-     lcd.clear();    // version basique
-     lcd.setCursor(0,0);
-     lcd.print("C'EST L'HEURE DE ");
-     lcd.setCursor(0,1);
-     lcd.print("  BOUGER UN PEU ! ");
-     
-     //lcd.createChar(3,man);       // decommenter pour afficher un mec qui cours ( bug pour l'instant ) 
+  lcd.clear();    // version basique
+  lcd.setCursor(0,0);
+  lcd.print("C'EST L'HEURE DE ");
+  lcd.setCursor(0,1);
+  lcd.print("  BOUGER UN PEU ! ");
+  //lcd.createChar(3,man);       // decommenter pour afficher un mec qui cours ( bug pour l'instant ) 
 
-     
 //     if(digitalRead(buttonPin) == HIGH){                                      // PARTIE BOUTON BUZZER ( a modifier ) 
 //      Serial.print("HAUT");
-     tone(buzzerPin, 1000);     // buzzer qui sonne 
+  tone(buzzerPin, 1000);     // buzzer qui sonne 
 //     }
 //     else{
 //      Serial.print("BAS");
@@ -68,24 +71,19 @@ void msgBouge(void){
 //      lcd.setCursor(0,0);
 //      lcd.print(" BIEN ETTIRE ? ");
 //     }
-     
   }
-    else{
-      lcd.clear();
-  lcd.setCursor(0,0);
-//text to print
-  lcd.print("   Bienvenue");
-  
-  for (int letter = 0; letter <= strlen(messagePadded) - 16; letter++) //From 0 to upto n-16 characters supply to below function
+  else
   {
-    showLetters(0, letter);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    //text to print
+    lcd.print("   Bienvenue");
+    for (int letter = 0; letter <= strlen(messagePadded) - 16; letter++) //From 0 to upto n-16 characters supply to below function
+    {
+      showLetters(0, letter);
+    }
   }
-  
-  }
- 
-
 }
-  
 void stop_buzzer(){             // FONCTION ARRET BUZZER ( a revoir ) 
   lcd.clear();    // version basique
   lcd.setCursor(0,0);
@@ -99,8 +97,8 @@ void setup() {
 
   Timer1.initialize(5000);
   Timer1.attachInterrupt(tim1);
-  Timer4.initialize(500);
-  Timer4.attachInterrupt(tim4);
+  // Timer4.initialize(50000);
+  // Timer4.attachInterrupt(tim4);
 
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
@@ -125,7 +123,5 @@ void loop() {
   // Serial.print("\t");
   // Serial.print(P2.send);
   // Serial.print("\t");
-  // Serial.print("\t");
-  
-  P2.send=0;
+  delay(100);
 }
