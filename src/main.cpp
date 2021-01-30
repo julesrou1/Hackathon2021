@@ -8,8 +8,8 @@ int fill;
 int authorized=0;
 struct Potentiometer P1;
 struct Potentiometer P2;
-
-const int RECV_PIN = 3;
+int j;
+const int RECV_PIN = 12;
 IRrecv irrecv(RECV_PIN);
 decode_results results;    // code de la telecommande
 
@@ -21,8 +21,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);   // Creation instance RFID
 String AuthorsizedCardUID = "79 5E 16 B4";
 //char LoginKey = KEY_RETURN;
 // initialize the library by providing the nuber of pins to it
-LiquidCrystal lcd(8,9,4,5,6,7);
-int i;
+LiquidCrystal lcd(8,9,4,5,6,20);
+int i=1;
 int buzzerPin=3;
 char * messagePadded = (char*)"       CECI EST UN TEST              ";    // msg qui scroll
 const int buttonPin = 20;  // interruption bouton buzzer
@@ -67,19 +67,29 @@ void showLetters(int printStart, int startLetter)                 // FONCTION PO
 }
 void msgBouge(void){
   if (authorized == 1){
-  i=(i+1)%2;            // modulo 2 donc 2 etats possibles  ( pour test uniquement ) 
-  if(i==0){
+  if(j==1){
    // buttonState = digitalRead(buttonPin);
-  lcd.clear();    // version basique
-  lcd.setCursor(0,0);
-  lcd.print("C'EST L'HEURE DE ");
-  lcd.setCursor(0,1);
-  lcd.print("  BOUGER UN PEU ! ");
-  //lcd.createChar(3,man);       // decommenter pour afficher un mec qui cours ( bug pour l'instant ) 
+    lcd.clear();    // version basique
+    lcd.setCursor(0,0);
+    lcd.print("C'EST L'HEURE DE ");
+    lcd.setCursor(0,1);
+    lcd.print("  BOUGER UN PEU ! ");
+  }else{
+    i=(i+1)%361;
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("   Bienvenue");
+    // for (int letter = 0; letter <= strlen(messagePadded) - 16; letter++) //From 0 to upto n-16 characters supply to below function
+    // {
+    //   showLetters(0, letter);
+    // }
+    if(i==0){j=1;}
+  }
+  }
+           // modulo 2 donc 2 etats possibles  ( pour test uniquement ) 
 
-//     if(digitalRead(buttonPin) == HIGH){                                      // PARTIE BOUTON BUZZER ( a modifier ) 
+  //lcd.createChar(3,man);       // decommenter pour afficher un mec qui cours ( bug pour l'instant ) 
 //      Serial.print("HAUT");
-  // tone(buzzerPin, 1000);     // buzzer qui sonne 
 //     }
 //     else{
 //      Serial.print("BAS");
@@ -87,19 +97,8 @@ void msgBouge(void){
 //      lcd.setCursor(0,0);
 //      lcd.print(" BIEN ETTIRE ? ");
 //     }
+  
   }
-  else
-  {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("   Bienvenue");
-    for (int letter = 0; letter <= strlen(messagePadded) - 16; letter++) //From 0 to upto n-16 characters supply to below function
-    {
-      showLetters(0, letter);
-    }
-  }
-  }
-}
 void stop_buzzer(){             // FONCTION ARRET BUZZER ( a revoir ) 
   lcd.clear();    // version basique
   lcd.setCursor(0,0);
@@ -111,7 +110,7 @@ void setup() {
 
   Serial.begin(9600); 
 
-  Timer1.initialize(5000);
+  Timer1.initialize(10000);
   Timer1.attachInterrupt(tim1);
   // Timer4.initialize(50000);
   // Timer4.attachInterrupt(tim4);
@@ -188,10 +187,13 @@ void loop() {
       //    Keyboard.write(LoginKey);
       delay(1000);
     }
-      // if (irrecv.decode(&results)){          // Reception code telecommande
-    //       Serial.println(results.value, HEX);
-    //       irrecv.resume();
-    // }
   }
-
+  if (irrecv.decode(&results)){          // Reception code telecommande
+  //lcd.clear();
+  //lcd.setCursor(0, 0);
+  //lcd.print(results.value);
+  Serial.println(results.value,HEX);
+  irrecv.resume();
+  
+  }
 }

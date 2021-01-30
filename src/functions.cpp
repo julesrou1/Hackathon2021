@@ -22,7 +22,7 @@ void sendConditionCheck(Potentiometer* P1,Potentiometer* P2){
         digitalWrite(P1->ledPin,LOW);}
     else{digitalWrite(P1->ledPin,HIGH);}
 
-    if(P1->Position!=P1->prevPosition){P1->send=1;}
+    if(P1->Position!=P1->prevPosition+1 && P1->Position!=P1->prevPosition-1 && P1->Position!=P1->prevPosition){P1->send=1;}
     
 
     if(P2->Position<10){
@@ -30,7 +30,7 @@ void sendConditionCheck(Potentiometer* P1,Potentiometer* P2){
         digitalWrite(P2->ledPin,LOW);}
     else{digitalWrite(P2->ledPin,HIGH);}
     
-    if(P2->Position!=P2->prevPosition){P2->send=1;}
+    if(P2->Position!=P2->prevPosition && P2->Position!=P2->prevPosition+1 && P2->Position!=P2->prevPosition-1){P2->send=1;}
 
 }
 
