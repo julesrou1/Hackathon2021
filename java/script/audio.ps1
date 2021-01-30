@@ -41,4 +41,4 @@ Add-Type -TypeDefinition @'
         }
 '@
 
-[Audio]::Mute = $true
+[Audio]::Volume  = 0.23

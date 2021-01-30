@@ -13,7 +13,7 @@ public class test {
         audio speaker = new audio();
         mic micro= new mic();
         SerialPort chosenPort;
-        chosenPort= SerialPort.getCommPort("COM5");
+        chosenPort= SerialPort.getCommPort("COM3");
         chosenPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER,0,0);
         chosenPort.openPort();
         Thread thread = new Thread(){
