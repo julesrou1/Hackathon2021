@@ -41,4 +41,4 @@ Add-Type -TypeDefinition @'
         }
 '@
 
-[Audio]::Volume  = 0.5
+[Audio]::Volume  = 1.0

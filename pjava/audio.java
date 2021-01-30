@@ -15,8 +15,7 @@ public class audio {
             System.out.println("marche pas :(");
         }
         try {
-            Runtime run = Runtime.getRuntime();
-            Process process = run.exec("powershell \"script/audio.ps1\"");
+            Runtime.getRuntime().exec("powershell \"script/audio.ps1\"");
         }catch (IOException e) {
             System.out.println("marche pas :("+e);
         }
@@ -32,8 +31,7 @@ public class audio {
             System.out.println("marche pas :(");
         }
         try {
-            Runtime run = Runtime.getRuntime();
-            Process process = run.exec("powershell \"script/audio.ps1\"");
+            Runtime.getRuntime().exec("powershell \"script/audio.ps1\"");
         }catch (IOException e) {
             System.out.println("marche pas :(");
         }
@@ -52,8 +50,7 @@ public class audio {
             System.out.println("marche pas :(");
         }
         try {
-            Runtime run = Runtime.getRuntime();
-            Process process = run.exec("powershell \"script/audio.ps1\"");
+            Runtime.getRuntime().exec("powershell \"script/audio.ps1\"");
         }catch (IOException e) {
             System.out.println("marche pas :(");
         }
