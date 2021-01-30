@@ -8,8 +8,9 @@ int fill;
 int authorized=0;
 struct Potentiometer P1;
 struct Potentiometer P2;
-int j;
-const int RECV_PIN = 12;
+int j,k;
+const int RECV_PIN = 10;
+const int btn1=21;
 IRrecv irrecv(RECV_PIN);
 decode_results results;    // code de la telecommande
 
@@ -21,10 +22,10 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);   // Creation instance RFID
 String AuthorsizedCardUID = "79 5E 16 B4";
 //char LoginKey = KEY_RETURN;
 // initialize the library by providing the nuber of pins to it
-LiquidCrystal lcd(8,9,4,5,6,20);
+LiquidCrystal lcd(8,9,4,5,6,7);
 int i=1;
 int buzzerPin=3;
-char * messagePadded = (char*)"       CECI EST UN TEST              ";    // msg qui scroll
+char * messagePadded = (char*)"       CECI EST UN TEST  hey hey            ";    // msg qui scroll
 const int buttonPin = 20;  // interruption bouton buzzer
 byte man[] = {         //  mec qui cours ( a revoir à la fin ) 
   B01110,
@@ -51,10 +52,6 @@ void tim1(){
     P2.prevPosition = P2.Position;
   }
 }
-
-// void tim4(){
-//   sendPotToPc(&P1,&P2);
-// }
 void showLetters(int printStart, int startLetter)                 // FONCTION POUR SCROLL TEXTE 
 {
   lcd.setCursor(printStart, 1);
@@ -63,7 +60,18 @@ void showLetters(int printStart, int startLetter)                 // FONCTION PO
     lcd.print(messagePadded[letter]);
   }
   lcd.print(" ");
-  delay(50000);
+  //delay(50000);
+}
+void tim4(){
+  if(j==0 && authorized == 1){
+    if (k == (int)strlen(messagePadded) - 16){k=0;}
+  else
+  {
+    k++;
+    showLetters(0, k);
+  }
+  
+}
 }
 void msgBouge(void){
   if (authorized == 1){
@@ -76,18 +84,22 @@ void msgBouge(void){
     lcd.print("  BOUGER UN PEU ! ");
   }else{
     i=(i+1)%361;
-    lcd.clear();
+    //i=(i+1)%3;
+    String mess;
+    mess="Volume=";
+    mess+=P1.Position;
+    mess+="   Mic :"+P2.Position;
     lcd.setCursor(0, 0);
-    lcd.print("   Bienvenue");
+    lcd.print("   Bienvenue  ");
     // for (int letter = 0; letter <= strlen(messagePadded) - 16; letter++) //From 0 to upto n-16 characters supply to below function
     // {
     //   showLetters(0, letter);
+    //   delay(50000);
     // }
     if(i==0){j=1;}
+    } 
   }
-  }
-           // modulo 2 donc 2 etats possibles  ( pour test uniquement ) 
-
+  // modulo 2 donc 2 etats possibles  ( pour test uniquement ) 
   //lcd.createChar(3,man);       // decommenter pour afficher un mec qui cours ( bug pour l'instant ) 
 //      Serial.print("HAUT");
 //     }
@@ -98,6 +110,13 @@ void msgBouge(void){
 //      lcd.print(" BIEN ETTIRE ? ");
 //     }
   
+  }
+  void btn1int(){
+    P2.mute=(P2.mute+1)%2;
+    P2.send=1;
+    Serial.print(P2.mute);
+    //sendPotToPc(&P1,&P2);
+
   }
 void stop_buzzer(){             // FONCTION ARRET BUZZER ( a revoir ) 
   lcd.clear();    // version basique
@@ -112,19 +131,20 @@ void setup() {
 
   Timer1.initialize(10000);
   Timer1.attachInterrupt(tim1);
-  // Timer4.initialize(50000);
-  // Timer4.attachInterrupt(tim4);
+  Timer4.initialize(500000);
+  Timer4.attachInterrupt(tim4);
 
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
-
+  pinMode(btn1, INPUT);
+  
   pinMode(41,OUTPUT); 
   pinMode(43,OUTPUT);
 
   lcd.begin(16,2);
   pinMode(buttonPin, INPUT_PULLUP);
   //attachInterrupt(digitalPinToInterrupt(buttonPin), stop_buzzer, CHANGE);                  // Le interrupt du bouton buzzer
-
+  // attachInterrupt(digitalPinToInterrupt(btn1), btn1int, HIGH);
   Timer3.initialize(5000000);
   Timer3.attachInterrupt(msgBouge); // Affiche message eau toutes les 5 secondes
 
@@ -143,7 +163,7 @@ void loop() {
     lcd.setCursor(0, 0);
     lcd.print("Bonjour");
     lcd.setCursor(0, 1);
-    lcd.print("Presentez votre badge");
+    lcd.print("Presentez badge");
     if (!mfrc522.PICC_IsNewCardPresent())
     {
       return;
@@ -187,13 +207,50 @@ void loop() {
       //    Keyboard.write(LoginKey);
       delay(1000);
     }
+    // if(digitalRead(btn1)==1){
+    //     P2.mute=(P2.mute+1)%3;
+    //     P2.send=1;
+    //     Serial.print(P2.mute);
+    //     delay(1000);
+    // };
   }
   if (irrecv.decode(&results)){          // Reception code telecommande
   //lcd.clear();
   //lcd.setCursor(0, 0);
   //lcd.print(results.value);
-  Serial.println(results.value,HEX);
-  irrecv.resume();
-  
+  switch(results.value){
+          case 0x92DFD41F: // MUTE 
+          String remote = "03";
+          remote += ";";
+          remote += "00";
+          remote += "!";
+          Serial.println(remote);
+          }
+
+        switch(results.value){
+          case 0x6BC6597B: //BOUTON 1 : CHROME
+          String remote = "04";
+          remote += ";";
+          remote += "01";
+          remote += "!";
+          Serial.println(remote);
+          }
+         switch(results.value){
+          case 0x735B797E: //BOUTON 2 : MOODLE
+          String remote = "05";
+          remote += ";";
+          remote += "01";
+          remote += "!";
+          Serial.println(remote);
+          }
+
+//         switch(results.value){
+//          case 0x1EC81DBF: //BOUTON 3 : CHROME
+//          digitalWrite(greenPin, HIGH);
+//          delay(2000);
+//          digitalWrite(greenPin, LOW);
+//          }
+        irrecv.resume();
   }
+  delay(100);
 }

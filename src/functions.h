@@ -22,6 +22,7 @@ typedef struct Potentiometer{
     int algPin;
     int ledPin;
     int send;
+    int mute;
 } Potentiometer;
 
 

@@ -6,7 +6,7 @@ int PotenFillStruc(Potentiometer* P1,Potentiometer* P2){
     P1->algPin=A0;
     P1->ledPin=41;
     P1->send=0;
-
+    P1->mute=0;
     P2->Name="Speaker";
     P2->prevPosition=0;
     P2->algPin=A1;
@@ -44,12 +44,21 @@ void sendPotToPc(Potentiometer* P1,Potentiometer* P2){
         Serial.println(P1string); //MOD = 01 pour mic; 02 pour Speaker
     }
     else if (P2->send==1){
+        // if(P2->mute==1){
+        //     String P2string = "03";
+        //     P2string += ";";
+        //     P2string += "00";
+        //     P2string += "!";
+        //     P2->send = 0;
+        //     Serial.println(P2string);
+        // }else{
         String P2string="02";
         P2string+=";";
         P2string+=P2->Position;
         P2string+="!";
         P2->send=0;
         Serial.println(P2string);
+        // }
     }
 }
 
