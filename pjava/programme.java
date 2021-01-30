@@ -17,7 +17,7 @@ public class programme {
     }
     public void programme3(){
         try{
-            Runtime.getRuntime().exec("powershell Start-Process -FilePath  raccourci/raccourci3.url ");
+            Runtime.getRuntime().exec("powershell Start-Process -FilePath  raccourci/raccourci3.lnk ");
         }catch(IOException e){
             System.out.println(e);
         }
