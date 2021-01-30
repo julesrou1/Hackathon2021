@@ -11,6 +11,9 @@
 #include "LiquidCrystal.h"
 #include "TimerThree.h"
 #include <Wire.h>
+#include <SPI.h>
+#include <MFRC522.h>
+#include <IRremote.h>
 
 typedef struct Potentiometer{
     String Name;
