@@ -29,7 +29,7 @@ void tim1(){
   P2.Position = map(analogRead(P2.algPin), 0, 1023, 0,100);
 
   sendConditionCheck(&P1,&P2);
-
+  //appeller les sendto ici
   P1.prevPosition = P1.Position;
   P2.prevPosition = P2.Position;
   }

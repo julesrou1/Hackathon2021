@@ -34,3 +34,28 @@ void sendConditionCheck(Potentiometer* P1,Potentiometer* P2){
 
 }
 
+<<<<<<< Updated upstream
+=======
+void sendPotToPc(Potentiometer* P1,Potentiometer* P2){
+    char* buf;
+    if (P1->send==1){
+        buf="01;"+P1->Position+"!"//en gros le format c'est "MOD;CODE!" avec MOD sur 2 bits 
+        Serial.println(buf); //MOD = 01 pour mic; 02 pour Speaker
+        P1->send=0;
+        buf="";//je sais pas si c'est bon mais l'idée c'est de vider le buffer pour pas se retrouver avec des données parasites
+    }
+    else if (P2->send==1){
+        buf="02;"+P2->Position+"!"
+        Serial.println(buf);
+        P2->send=0;
+        buf="";
+    }
+}
+
+void sendButToPc(Button Bx){
+    //même idée, MOD = 03, et après le code correspond au bouton.
+    //CODE=01 -> mute
+    //CODE=02-> unmute
+    //le reste est à mapper
+}
+>>>>>>> Stashed changes

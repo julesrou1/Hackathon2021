@@ -28,7 +28,7 @@ public class test {
             }
         });
 */
-
+        mic micro= new mic();
         SerialPort chosenPort;
         chosenPort= SerialPort.getCommPort("COM5");
         chosenPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER,0,0);
@@ -37,17 +37,31 @@ public class test {
             public void run(){
                 Scanner scanner = new Scanner(chosenPort.getInputStream());
                 while(scanner.hasNextLine()){
+
                     String line = scanner.nextLine();
                     //int number = Integer.parseInt(line);
                     //System.out.println(number);
-                    if(line.equals("1")){
-                        System.out.print("MUTE!\n");
+                    int lon = line.length();
+                    String mod =line.substring(0,line.indexOf(";"));
+                    String code=line.substring(3,line.indexOf("!"));
+                    if(mod.equals("01")){
+                        //micro.mutemic();
+                        //potal 1 -> micro
+                        System.out.print("MICRO!\n"+code+"\n");
                     }
-                    else if (line.equals("2")){
-                        System.out.print("mabite\n");
+                    else if (mod.equals("02")){
+                        //potal 2 -> Speaker
+                        System.out.print("SPEAKER!\n"+code+"\n");
                     }
-                    else if (line.equals("3")){
-                        System.out.print("oui\n");
+                    else if (mod.equals("03")){
+                        if (code.equals("01")) {
+                            micro.mutemic();
+                            System.out.print("MUTE!\n");
+                        }
+                        if (code.equals("02")){
+                            micro.unmutemic();
+                            System.out.print("UNMUTE\n");
+                        }
                     }
                     else if (line.equals("4")){
                         System.out.print("non\n");
