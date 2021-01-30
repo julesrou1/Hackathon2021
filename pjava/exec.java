@@ -1,9 +1,8 @@
-import java.io.FileWriter;   
-import java.io.IOException;  
 
 public class exec {
+    public String chemin = "pjava" ;
     public static void main(String[] args) {
         mic micro = new mic();
-        micro.unmutemic();
+        micro.volume(50);
     }
 }
