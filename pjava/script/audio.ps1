@@ -41,4 +41,4 @@ Add-Type -TypeDefinition @'
         }
 '@
 
-[Audio]::Mute = $false
+[Audio]::Mute = $true
