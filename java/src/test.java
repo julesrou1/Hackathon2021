@@ -28,9 +28,10 @@ public class test {
             }
         });
 */
+        audio speaker = new audio();
         mic micro= new mic();
         SerialPort chosenPort;
-        chosenPort= SerialPort.getCommPort("COM5");
+        chosenPort= SerialPort.getCommPort("COM6");
         chosenPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER,0,0);
         chosenPort.openPort();
         Thread thread = new Thread(){
@@ -41,17 +42,23 @@ public class test {
                     String line = scanner.nextLine();
                     //int number = Integer.parseInt(line);
                     //System.out.println(number);
-                    int lon = line.length();
+                    //int lon = line.length();
                     String mod =line.substring(0,line.indexOf(";"));
                     String code=line.substring(3,line.indexOf("!"));
                     if(mod.equals("01")){
                         //micro.mutemic();
                         //potal 1 -> micro
                         System.out.print("MICRO!\n"+code+"\n");
+                        micro.volume(Integer.parseInt(code));
+                        System.out.print(Integer.parseInt(code));
+
                     }
                     else if (mod.equals("02")){
                         //potal 2 -> Speaker
                         System.out.print("SPEAKER!\n"+code+"\n");
+                        speaker.volume(Integer.parseInt(code));
+                        System.out.print(Integer.parseInt(code));
+
                     }
                     else if (mod.equals("03")){
                         if (code.equals("01")) {

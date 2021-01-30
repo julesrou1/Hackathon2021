@@ -25,7 +25,7 @@ Add-Type -TypeDefinition @'
           static IAudioEndpointVolume Vol() {
             var enumerator = new MMDeviceEnumeratorComObject() as IMMDeviceEnumerator;
             IMMDevice dev = null;
-            Marshal.ThrowExceptionForHR(enumerator.GetDefaultAudioEndpoint(/*eCapture*/ 1, /*eMultimedia*/ 1, out dev));
+            Marshal.ThrowExceptionForHR(enumerator.GetDefaultAudioEndpoint(/*eRender*/ 0, /*eMultimedia*/ 1, out dev));
             IAudioEndpointVolume epv = null;
             var epvid = typeof(IAudioEndpointVolume).GUID;
             Marshal.ThrowExceptionForHR(dev.Activate(ref epvid, /*CLSCTX_ALL*/ 23, 0, out epv));
