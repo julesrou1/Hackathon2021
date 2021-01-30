@@ -33,3 +33,4 @@ void sendConditionCheck(Potentiometer* P1,Potentiometer* P2){
     if(P2->Position!=P2->prevPosition){P2->send=1;}
 
 }
+

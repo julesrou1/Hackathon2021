@@ -51,7 +51,7 @@ void msgBouge(void){
      
 //     if(digitalRead(buttonPin) == HIGH){                                      // PARTIE BOUTON BUZZER ( a modifier ) 
 //      Serial.print("HAUT");
-//      //tone(buzzerPin, 1000);     // buzzer qui sonne 
+     tone(buzzerPin, 1000);     // buzzer qui sonne 
 //     }
 //     else{
 //      Serial.print("BAS");

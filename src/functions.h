@@ -6,6 +6,11 @@
 #include <math.h>
 #include <stdio.h>
 #include <TimerOne.h>
+#include <TimerFour.h>
+#include <Keypad.h>
+#include "LiquidCrystal.h"
+#include "TimerThree.h"
+#include <Wire.h>
 
 typedef struct Potentiometer{
     String Name;
@@ -15,6 +20,7 @@ typedef struct Potentiometer{
     int ledPin;
     int send;
 } Potentiometer;
+
 
 //Use to to check if value for mic/Speaker volume change enough to be consider a input from user.
 //We don't want electrical noise to change volume
